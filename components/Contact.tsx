@@ -101,7 +101,7 @@ export function Contact() {
         {/* Main headline */}
         <motion.h2
           style={{ y: titleY, opacity: titleOpacity, fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem, 14vw, 13rem)", lineHeight: 0.82 }}
-          className="font-black text-black leading-[0.82] mb-12 tracking-tight select-none"
+          className="font-black text-black leading-[0.82] mb-12 tracking-tight select-none font-light"
         >
           LET'S BUILD
           <br />

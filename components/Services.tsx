@@ -150,7 +150,7 @@ export function Services() {
 
 
             {/* Everything inside here is sticky */}
-            <div className="sticky top-0 h-screen w-full flex flex-col px-6 md:px-20 overflow-hidden" style={{ paddingTop: "48px" }}>
+            <div className="sticky top-0 h-screen w-full flex flex-col px-6 md:px-10 overflow-hidden" style={{ paddingTop: "48px" }}>
 
                 {/* Grid bg */}
                 <div
@@ -161,7 +161,7 @@ export function Services() {
                     }}
                 />
                 {/* Header */}
-                <div className="mb-8 shrink-0">
+                <div className="mb-8 shrink-0 font-light">
                     <span className="text-[#f5a623] text-sm font-black uppercase tracking-[8px]">Expertise</span>
                     <h2 className="text-5xl md:text-[6vw] font-black text-black leading-none mt-5" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                         MY SERVICES

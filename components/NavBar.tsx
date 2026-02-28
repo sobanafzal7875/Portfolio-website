@@ -31,7 +31,7 @@ export function NavBar() {
         >
             <div className="flex items-center gap-2 text-2xl font-bold tracking-tight text-black" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                 Soban<span className="text-[#f5a623] text-3xl">.</span>
-                <CubeIcon size={28} className="ml-1 opacity-80" />
+                {/* <CubeIcon size={28} className="ml-1 opacity-80" /> */}
             </div>
 
             <ul className="hidden md:flex items-center gap-10 list-none">

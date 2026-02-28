@@ -129,7 +129,7 @@ const CodeOverlay = () => (
 
 const NodesBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const mouseRef = useRef({ x: -1000, y: -1000 });
+    const mouseRef = useRef({ x: -100, y: -100 });
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -151,9 +151,9 @@ const NodesBackground = () => {
             constructor(w: number, h: number) {
                 this.x = Math.random() * w;
                 this.y = Math.random() * h;
-                this.vx = (Math.random() - 0.5) * 0.2;
-                this.vy = (Math.random() - 0.5) * 0.2;
-                this.radius = Math.random() * 7;
+                this.vx = (Math.random() - 0.5) * 0.7;
+                this.vy = (Math.random() - 0.5) * 0.7;
+                this.radius = Math.random() * 5;
             }
 
             update(w: number, h: number) {
@@ -277,7 +277,7 @@ export function HeroAbout() {
                 <NodesBackground />
 
                 <motion.div style={{ opacity: circuitHeroOpacity }} className="absolute inset-0 z-[1] pointer-events-none">
-                    <CircuitBackground />
+                    {/* <CircuitBackground /> */}
                     <div className="absolute left-[120px] top-[60px] z-[2]">
                         <svg width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 0 8px rgba(245,166,35,0.6))" }}>
                             <polygon points="25,3 46,14 46,36 25,47 4,36 4,14" stroke="#f5a623" strokeWidth="1.5" fill="rgba(245,166,35,0.12)" />
@@ -288,9 +288,9 @@ export function HeroAbout() {
                 </motion.div>
 
                 <motion.div style={{ opacity: circuitAboutOpacity }} className="absolute inset-0 z-[1] pointer-events-none">
-                    <AboutDecoBackground />
-                    <CodeOverlay />
-                    <HexagonDecor />
+                    {/* <AboutDecoBackground /> */}
+                    {/* <CodeOverlay /> */}
+                    {/* <HexagonDecor /> */}
                 </motion.div>
 
                 <motion.div
@@ -300,7 +300,9 @@ export function HeroAbout() {
                     <div className="mb-10 text-[#f5a623] text-sm font-black uppercase tracking-[8px]">
                         Hi, I am Soban
                     </div>
-                    <h1 className="flex flex-col leading-[0.8]" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                    <h1 className="flex flex-col leading-[0.8]"
+                     style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                     >
                         <motion.span
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -324,15 +326,22 @@ export function HeroAbout() {
                 <motion.div
                     id="about"
                     style={{ opacity: aboutOpacity, x: aboutX }}
-                    className="absolute inset-0 flex items-center px-6 md:px-20 lg:px-44 z-20 pointer-events-none pt-[100px]"
+                    className=" absolute inset-0 flex items-center px-6 md:px-20 lg:px-10 z-20 pointer-events-none pt-[100px]"
                 >
                     <div className="max-w-4xl pointer-events-auto">
                         <p className="text-[#f5a623] text-sm font-black uppercase tracking-[8px] mb-6">
                             Who I Am
                         </p>
-                        <h2 className="text-6xl md:text-[6vw] font-black text-black leading-none mb-10" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                        <h2 className="text-6xl md:text-[6vw] font-light font-black text-black leading-none mb-10"
+                        
+                         style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                             Building digital<br />
-                            <span className="text-transparent" style={{ WebkitTextStroke: "2px #f5a623" }}>products that matter.</span>
+                            <span
+                             className="text-transparent" 
+                             
+                            style={{ WebkitTextStroke: "1px #f5a623", letterSpacing: "1.5px" }}>
+                                products that matter.
+                                </span>
                         </h2>
 
                         <div className="max-w-2xl text-gray-500 font-medium text-lg md:text-xl leading-relaxed space-y-8">
