@@ -150,7 +150,7 @@ export function Services() {
 
 
             {/* Everything inside here is sticky */}
-            <div className="sticky top-0 h-screen w-full flex flex-col px-6 md:px-10 overflow-hidden" style={{ paddingTop: "48px" }}>
+            <div className="sticky top-0 h-screen w-full flex flex-col px-4 md:px-10 overflow-y-auto lg:overflow-hidden" style={{ paddingTop: "20px" }}>
 
                 {/* Grid bg */}
                 <div
@@ -161,9 +161,9 @@ export function Services() {
                     }}
                 />
                 {/* Header */}
-                <div className="mb-8 shrink-0 font-light">
-                    <span className="text-[#f5a623] text-sm font-black uppercase tracking-[8px]">Expertise</span>
-                    <h2 className="text-5xl md:text-[6vw] font-black text-black leading-none mt-5" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                <div className="mb-4 md:mb-8 shrink-0 font-light">
+                    <span className="text-[#f5a623] text-xs md:text-sm font-black uppercase tracking-[4px] md:tracking-[8px]">Expertise</span>
+                    <h2 className="text-4xl md:text-[6vw] font-black text-black leading-none mt-2 md:mt-5" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                         MY SERVICES
                     </h2>
                 </div>
@@ -197,7 +197,7 @@ export function Services() {
                         ))}
                     </div>
 
-                    <div className="hidden lg:block w-px bg-gray-100 shrink-0" />
+                    {/* <div className="hidden lg:block w-px bg-red-500 shrink-0" /> */}
 
                     {/* Card stack */}
                     <div className="flex-1 relative" style={{ perspective: "1200px" }}>
@@ -228,8 +228,8 @@ export function Services() {
                                     }}
                                 >
                                     <div
-                                        className="relative w-full rounded-3xl overflow-hidden border border-gray-100 shadow-2xl"
-                                        style={{ background: service.bg, minHeight: "380px" }}
+                                        className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 shadow-2xl"
+                                        style={{ background: service.bg, minHeight: "320px" }}
                                     >
                                         {/* Dim overlay for buried cards */}
                                         <div
@@ -239,24 +239,24 @@ export function Services() {
 
                                         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-[380px]">
                                             {/* LEFT: text */}
-                                            <div className="p-10 md:p-12 flex flex-col justify-between">
+                                            <div className="p-6 md:p-12 flex flex-col justify-between">
                                                 <div>
-                                                    <div className="flex items-center gap-4 mb-6">
-                                                        <span className="text-xs font-black tracking-[5px] uppercase text-[#f5a623]">{service.id}</span>
+                                                    <div className="flex items-center gap-4 mb-4 md:mb-6">
+                                                        <span className="text-xs font-black tracking-[3px] md:tracking-[5px] uppercase text-[#f5a623]">{service.id}</span>
                                                         <div className="h-px flex-1 bg-gray-200" />
                                                     </div>
                                                     <h3
-                                                        className="font-black text-black leading-[0.9] mb-4 whitespace-pre-line"
-                                                        style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 3.5vw, 4rem)" }}
+                                                        className="font-black text-black leading-[0.9] mb-3 md:mb-4 whitespace-pre-line"
+                                                        style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)" }}
                                                     >
                                                         {service.title}
                                                     </h3>
-                                                    <p className="text-[#f5a623] text-xs font-black uppercase tracking-[4px] mb-5">{service.subtitle}</p>
-                                                    <p className="text-gray-500 text-sm leading-relaxed max-w-sm">{service.description}</p>
+                                                    <p className="text-[#f5a623] text-[10px] md:text-xs font-black uppercase tracking-[2px] md:tracking-[4px] mb-3 md:mb-5">{service.subtitle}</p>
+                                                    <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-sm">{service.description}</p>
                                                 </div>
-                                                <div className="flex flex-wrap gap-2 mt-8">
+                                                <div className="flex flex-wrap gap-2 mt-4 md:mt-8">
                                                     {service.tags.map((tag) => (
-                                                        <span key={tag} className="text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full border border-gray-200 text-gray-400">
+                                                        <span key={tag} className="text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-gray-200 text-gray-400">
                                                             {tag}
                                                         </span>
                                                     ))}
@@ -264,8 +264,8 @@ export function Services() {
                                             </div>
 
                                             {/* RIGHT: illustration */}
-                                            <div className="flex items-center justify-center p-10 bg-gray-50/60">
-                                                <div className="w-[220px] h-[160px]">
+                                            <div className="hidden md:flex items-center justify-center p-8 bg-gray-50/60">
+                                                <div className="w-[180px] lg:w-[220px] h-[130px] lg:h-[160px]">
                                                     <service.Illustration />
                                                 </div>
                                             </div>

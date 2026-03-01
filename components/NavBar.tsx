@@ -37,7 +37,7 @@ export function NavBar() {
             <ul className="hidden md:flex items-center gap-10 list-none">
                 {["Home", "About", "Services", "Projects"].map((item) => (
                     <li key={item}>
-                        <a href={`#${item.toLowerCase()}`} className="text-xs font-black uppercase tracking-[3px] text-black hover:text-[#f5a623] transition-all relative group">
+                        <a href={`#${item.toLowerCase()}`} className=" text-sm font-black uppercase tracking-[3px] text-black hover:text-[#f5a623] transition-all relative group">
                             {item}
                         </a>
                     </li>

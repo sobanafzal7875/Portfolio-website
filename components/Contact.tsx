@@ -84,7 +84,7 @@ export function Contact() {
       <div className="w-full h-px bg-gray-100" />
 
       {/* ── HERO CTA AREA ──────────────────────────── */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-20 pt-32 pb-20">
+      <div className="relative z-10 flex flex-col items-center text-center px-6 md:px-20 pt-16 md:pt-32 pb-12 md:pb-20">
 
         {/* Badge */}
         <motion.div
@@ -92,29 +92,29 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="flex items-center gap-2 mb-10 px-4 py-2 rounded-full border border-gray-200 bg-gray-50"
+          className="flex items-center gap-2 mb-6 md:mb-10 px-4 py-2 rounded-full border border-gray-200 bg-gray-50"
         >
           <span className="w-2 h-2 rounded-full bg-[#f5a623] animate-pulse" />
-          <span className="text-[10px] font-black tracking-[4px] text-gray-500 uppercase">Available for work</span>
+          <span className="text-[9px] md:text-[10px] font-black tracking-[3px] md:tracking-[4px] text-gray-500 uppercase">Available for work</span>
         </motion.div>
 
         {/* Main headline */}
         <motion.h2
-          style={{ y: titleY, opacity: titleOpacity, fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem, 14vw, 13rem)", lineHeight: 0.82 }}
-          className="font-black text-black leading-[0.82] mb-12 tracking-tight select-none font-light"
+          style={{ y: titleY, opacity: titleOpacity, fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.5rem, 12vw, 13rem)", lineHeight: 0.85 }}
+          className="font-black text-black leading-none mb-8 md:mb-12 tracking-tight select-none font-light uppercase"
         >
           LET'S BUILD
           <br />
           <span
             className="text-transparent"
-            style={{ WebkitTextStroke: "1.5px #111" }}
+            style={{ WebkitTextStroke: "1px #111" }}
           >
             SOMETHING
           </span>
           <br />
           <span
             className="text-transparent"
-            style={{ WebkitTextStroke: "1.5px #f5a623" }}
+            style={{ WebkitTextStroke: "1px #f5a623" }}
           >
             GREAT.
           </span>
@@ -129,12 +129,12 @@ export function Contact() {
           viewport={{ once: true }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
-          className="group relative inline-flex items-center gap-4 mt-4 px-10 py-5 rounded-full bg-black text-white font-black text-sm tracking-[3px] uppercase overflow-hidden"
+          className="group relative inline-flex items-center gap-3 md:gap-4 mt-2 md:mt-4 px-6 md:px-10 py-4 md:py-5 rounded-full bg-black text-white font-black text-[11px] md:text-sm tracking-[2px] md:tracking-[3px] uppercase overflow-hidden"
         >
           <span className="absolute inset-0 bg-[#f5a623] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-          <Mail size={16} className="relative z-10 group-hover:text-black transition-colors duration-300" />
+          <Mail size={14} className="relative z-10 group-hover:text-black transition-colors duration-300" />
           <span className="relative z-10 group-hover:text-black transition-colors duration-300">SOBANAFZALWORK@GMAIL.COM</span>
-          <ArrowUpRight size={16} className="relative z-10 group-hover:text-black transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          <ArrowUpRight size={14} className="relative z-10 group-hover:text-black transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
         </motion.a>
 
         {/* Location */}
@@ -151,7 +151,7 @@ export function Contact() {
       </div>
 
       {/* ── FOOTER ─────────────────────────────────── */}
-      <footer className="relative z-10 bg-[#0f0f0f] px-6 md:px-20 pt-16 pb-10">
+      <footer className="relative z-10 bg-[#0f0f0f] px-6 md:px-20 pt-12 md:pt-16 pb-8 md:pb-10">
         {/* Inner grid bg for footer */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.05]"

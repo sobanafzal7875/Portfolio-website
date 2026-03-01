@@ -72,14 +72,17 @@ function getCardTransform(index: number, activeIndex: number, total: number): Ca
   const rad = (angle * Math.PI) / 180;
 
   // Carousel: cards orbit in a flat ellipse
-  const rx = 320; // horizontal radius
-  const rz = 120; // depth radius
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const rx = isMobile ? window.innerWidth * 0.4 : 320; // horizontal radius
+  const rz = isMobile ? 80 : 120; // depth radius
 
   const x = Math.sin(rad) * rx;
   const z = Math.cos(rad) * rz - rz; // shift so front card is at z=0
 
   // Scale based on depth
-  const scale = 0.55 + 0.45 * ((z + rz) / rz);
+  const scale = isMobile
+    ? (diff === 0 ? 1 : 0.8)
+    : (0.55 + 0.45 * ((z + rz) / rz));
   const opacity = diff === 0 ? 1 : diff === 1 || diff === total - 1 ? 0.55 : 0.25;
   const zIndex = diff === 0 ? 10 : diff === 1 || diff === total - 1 ? 5 : 2;
   const blur = diff === 0 ? 0 : diff === 1 || diff === total - 1 ? 1 : 3;
@@ -94,11 +97,11 @@ function ProjectCard({ project, transform, isActive, onHover }: { project: Proje
     <div
       onMouseEnter={() => isActive && onHover(true)}
       onMouseLeave={() => onHover(false)}
+      className="w-[85vw] md:w-[480px]"
       style={{
         position: "absolute",
         left: "50%",
-        top: "35%",
-        width: "480px",
+        top: "40%",
         transform: `translate(calc(-50% + ${x}px), -50%) scale(${scale})`,
         opacity,
         zIndex,
@@ -132,7 +135,7 @@ function CardInner({ project, isActive }: { project: Project; isActive: boolean 
         transform: hovered && isActive ? "scale(1.03) translateY(-6px)" : "scale(1) translateY(0)",
         transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         cursor: "pointer",
-        minHeight: "360px",
+        minHeight: "auto",
       }}
     >
       {/* Glow border pulse */}
@@ -204,11 +207,11 @@ function CardInner({ project, isActive }: { project: Project; isActive: boolean 
           {project.subtitle}
         </p>
 
-        <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "13px", lineHeight: 1.65, marginBottom: "20px" }}>
+        <p className="hidden sm:block text-gray-400 text-xs md:text-sm leading-relaxed mb-6">
           {project.description}
         </p>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        <div className="hidden sm:flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <span key={tag} style={{
               fontSize: "10px", fontWeight: 700, letterSpacing: "2px",
@@ -271,12 +274,7 @@ export function Projects() {
       }} />
 
       {/* Sticky container */}
-      <div style={{
-        position: "sticky", top: 0, height: "100vh",
-        display: "flex", flexDirection: "column",
-        padding: "130px 48px 0",
-        overflow: "hidden",
-      }}>
+      <div className="relative z-10 sticky top-0 h-screen w-full flex flex-col px-6 md:px-12 overflow-hidden" style={{ paddingTop: "80px" }}>
 
         {/* Grid texture */}
         <div style={{
@@ -286,15 +284,8 @@ export function Projects() {
         }} />
 
         {/* Header */}
-        <div style={{ marginBottom: "32px", flexShrink: 0 }}>
-          <h2 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(2rem, 4.5vw, 5rem)",
-            fontWeight: 900,
-            color: "#fff",
-            lineHeight: 1,
-            letterSpacing: "2px",
-          }}>
+        <div className="mb-4 md:mb-8 shrink-0">
+          <h2 className="text-4xl md:text-[5vw] font-black text-white leading-none tracking-tight uppercase" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
             MY PROJECTS
           </h2>
         </div>
@@ -302,76 +293,52 @@ export function Projects() {
         {/* Body */}
         <div style={{ display: "flex", flex: 1, gap: "48px", minHeight: 0 }}>
 
-          {/* Left nav */}
-          <div style={{
-            display: "flex", flexDirection: "column", justifyContent: "flex-start",
-            gap: "28px", width: "320px", flexShrink: 0, paddingTop: "16px",
-          }}>
+          {/* Left nav - Hidden on mobile */}
+          <div className="hidden lg:flex flex-col justify-start gap-8 w-[300px] shrink-0 pt-4">
             {projects.map((p, i) => (
-              <div key={p.id} style={{ display: "flex", alignItems: "center", gap: "16px", cursor: "default" }}>
-                <span style={{
-                  fontSize: "11px", fontWeight: 900, letterSpacing: "4px",
-                  color: activeIndex === i ? p.accent : "rgba(255,255,255,0.2)",
-                  transition: "color 0.4s", fontFamily: "'Bebas Neue', sans-serif",
-                }}>
+              <div key={p.id} className="flex items-center gap-5 cursor-default">
+                <span className="text-xs font-black tracking-widest transition-colors duration-300"
+                  style={{ color: activeIndex === i ? p.accent : "rgba(255,255,255,0.2)", fontFamily: "'Bebas Neue', sans-serif" }}>
                   {p.id}
                 </span>
-                <span style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "1.6rem", fontWeight: 900, letterSpacing: "1px",
-                  color: activeIndex === i ? p.accent : "rgba(255,255,255,0.12)",
-                  transform: activeIndex === i ? "scale(1.06)" : "scale(1)",
-                  display: "inline-block",
-                  transformOrigin: "left center",
-                  transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
-                  textTransform: "uppercase",
-                }}>
+                <span className="text-2xl font-black uppercase leading-none transition-all duration-300"
+                  style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    color: activeIndex === i ? p.accent : "rgba(255,255,255,0.12)",
+                    transform: activeIndex === i ? "scale(1.08)" : "scale(1)",
+                    transformOrigin: "left center",
+                  }}>
                   {p.title.replace("\n", " ")}
                 </span>
               </div>
             ))}
 
             {/* Scroll indicator */}
-            <div style={{ marginTop: "auto", paddingBottom: "48px" }}>
-              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            <div className="mt-auto pb-12">
+              <div className="flex gap-2 items-center mb-3">
                 {projects.map((_, i) => (
-                  <div key={i} style={{
-                    height: "3px",
-                    width: activeIndex === i ? "28px" : "8px",
-                    borderRadius: "2px",
-                    background: activeIndex === i ? projects[activeIndex].accent : "rgba(255,255,255,0.15)",
-                    transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
-                  }} />
+                  <div key={i} className="h-1 rounded-full transition-all duration-500"
+                    style={{
+                      width: activeIndex === i ? "32px" : "8px",
+                      background: activeIndex === i ? projects[activeIndex].accent : "rgba(255,255,255,0.15)"
+                    }} />
                 ))}
               </div>
-              <p style={{
-                color: "rgba(255,255,255,0.25)", fontSize: "10px", letterSpacing: "3px",
-                textTransform: "uppercase", marginTop: "10px", fontWeight: 700,
-              }}>
-                Scroll to explore
-              </p>
+              <p className="text-white/20 text-[10px] uppercase font-black tracking-[4px]">Scroll to explore</p>
             </div>
           </div>
 
           {/* Vertical divider */}
           <div className="ml-1"
-          style={{ width: "2px", background: "rgba(255,255,255,0.1)", flexShrink: 0 }} />
+            style={{ width: "2px", background: "rgba(255,255,255,0.1)", flexShrink: 0 }} />
 
           {/* Circular carousel */}
           <div style={{
             flex: 1, position: "relative",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            {/* Orbit ring hint */}
-            <div style={{
-              position: "absolute",
-              width: "640px", height: "200px",
-              border: "1px solid rgba(255,255,255,0.04)",
-              borderRadius: "50%",
-              top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              pointerEvents: "none",
-            }} />
+            {/* Orbit ring hint - Hidden on mobile */}
+            <div className="hidden md:block absolute w-[640px] h-[200px] border border-white/[0.04] rounded-[50%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
             {projects.map((project, index) => {
               const transform = getCardTransform(index, activeIndex, projects.length);
