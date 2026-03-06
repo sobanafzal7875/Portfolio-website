@@ -161,9 +161,9 @@ export function Services() {
                     }}
                 />
                 {/* Header */}
-                <div className="mb-4 md:mb-8 shrink-0 font-light">
+                <div className="mb-4 md:mb-8 mt-15  shrink-0 font-light">
                     <span className="text-[#f5a623] text-xs md:text-sm font-black uppercase tracking-[4px] md:tracking-[8px]">Expertise</span>
-                    <h2 className="text-4xl md:text-[6vw] font-black text-black leading-none mt-2 md:mt-5" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                    <h2 className="text-4xl md:text-[6vw] font-black text-black leading-none mt-2 md:mt-5 " style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                         MY SERVICES
                     </h2>
                 </div>
@@ -200,7 +200,7 @@ export function Services() {
                     {/* <div className="hidden lg:block w-px bg-red-500 shrink-0" /> */}
 
                     {/* Card stack */}
-                    <div className="flex-1 relative" style={{ perspective: "1200px" }}>
+                    <div className="flex-1 relative mt-8 md:mt-5 lg:mt-0 pb-" style={{ perspective: "1200px" }}>
                         {services.map((service, index) => {
                             // depth: 0 = top (active), 1 = one below, etc.
                             // Cards with index > activeIndex are not yet revealed — keep off screen below

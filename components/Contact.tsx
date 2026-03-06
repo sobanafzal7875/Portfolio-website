@@ -101,7 +101,7 @@ export function Contact() {
         {/* Main headline */}
         <motion.h2
           style={{ y: titleY, opacity: titleOpacity, fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.5rem, 12vw, 13rem)", lineHeight: 0.85 }}
-          className="font-black text-black leading-none mb-8 md:mb-12 tracking-tight select-none font-light uppercase"
+          className="font-black text-black leading-none mb-8 md:mb-12 tracking-tight select-none font-light uppercase  "
         >
           LET'S BUILD
           <br />
@@ -129,7 +129,7 @@ export function Contact() {
           viewport={{ once: true }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
-          className="group relative inline-flex items-center gap-3 md:gap-4 mt-2 md:mt-4 px-6 md:px-10 py-4 md:py-5 rounded-full bg-black text-white font-black text-[11px] md:text-sm tracking-[2px] md:tracking-[3px] uppercase overflow-hidden"
+          className="group relative inline-flex items-center gap-3 md:gap-4 mt-8 md:mt-2 px-6 md:px-10 py-4 md:py-5 rounded-full bg-black text-white font-black text-[11px] md:text-sm tracking-[2px] md:tracking-[3px] uppercase overflow-hidden"
         >
           <span className="absolute inset-0 bg-[#f5a623] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           <Mail size={14} className="relative z-10 group-hover:text-black transition-colors duration-300" />

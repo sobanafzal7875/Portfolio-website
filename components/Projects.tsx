@@ -329,7 +329,7 @@ export function Projects() {
           </div>
 
           {/* Vertical divider */}
-          <div className="ml-1"
+          <div className="ml-1 hidden md:block"
             style={{ width: "2px", background: "rgba(255,255,255,0.1)", flexShrink: 0 }} />
 
           {/* Circular carousel */}
