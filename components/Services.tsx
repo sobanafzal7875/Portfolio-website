@@ -115,7 +115,104 @@ const services = [
     },
 ];
 
-const STACK_OFFSET = 14; // px — each buried card peeks above the active one
+
+interface CardTransform {
+    x: number;
+    z: number;
+    scale: number;
+    opacity: number;
+    zIndex: number;
+    blur: number;
+    angle: number;
+}
+
+// Circular positions around a center point (in 3D-ish space)
+function getCardTransform(index: number, activeIndex: number, total: number): CardTransform {
+    const diff = ((index - activeIndex) % total + total) % total;
+    // diff 0 = front/active, 1 = right, 2 = back, 3 = left (for 4 cards)
+    const angle = (diff / total) * 360;
+    const rad = (angle * Math.PI) / 180;
+
+    // Carousel: cards orbit in a flat ellipse
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const isTablet = typeof window !== 'undefined' && window.innerWidth >= 768 && window.innerWidth < 1024;
+    const rx = isMobile ? window.innerWidth * 0.35 : isTablet ? 250 : 350; // horizontal radius
+    const rz = isMobile ? 60 : 100; // depth radius
+
+    const x = Math.sin(rad) * rx;
+    const z = Math.cos(rad) * rz - rz; // shift so front card is at z=0
+
+    // Scale based on depth
+    const scale = isMobile
+        ? (diff === 0 ? 1 : 0.8)
+        : (0.55 + 0.45 * ((z + rz) / rz));
+    const opacity = diff === 0 ? 1 : diff === 1 || diff === total - 1 ? 0.55 : 0.25;
+    const zIndex = diff === 0 ? 10 : diff === 1 || diff === total - 1 ? 5 : 2;
+    const blur = diff === 0 ? 0 : diff === 1 || diff === total - 1 ? 1 : 3;
+
+    return { x, z, scale, opacity, zIndex, blur, angle };
+}
+
+function ServiceCard({ service, transform, isActive }: { service: any; transform: CardTransform; isActive: boolean }) {
+    const { x, scale, opacity, zIndex, blur } = transform;
+
+    return (
+        <div
+            className="w-[85vw] md:w-[600px] lg:w-[750px] pb-30"
+            style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: `translate(calc(-50% + ${x}px), -50%) scale(${scale})`,
+                opacity,
+                zIndex,
+                filter: blur > 0 ? `blur(${blur}px)` : "none",
+                transition: "all 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
+                transformOrigin: "center center",
+                pointerEvents: isActive ? "all" : "none",
+            }}
+        >
+            <div
+                className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 shadow-2xl"
+                style={{ background: service.bg, minHeight: "320px" }}
+            >
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-[380px]">
+                    {/* LEFT: text */}
+                    <div className="p-6 md:p-12 flex flex-col justify-between">
+                        <div>
+                            <div className="flex items-center gap-4 mb-4 md:mb-6">
+                                <span className="text-xs font-black tracking-[3px] md:tracking-[5px] uppercase text-[#f5a623]">{service.id}</span>
+                                <div className="h-px flex-1 bg-gray-200" />
+                            </div>
+                            <h3
+                                className="font-black text-black leading-[0.9] mb-3 md:mb-4 whitespace-pre-line"
+                                style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)" }}
+                            >
+                                {service.title}
+                            </h3>
+                            <p className="text-[#f5a623] text-[10px] md:text-xs font-black uppercase tracking-[2px] md:tracking-[4px] mb-3 md:mb-5">{service.subtitle}</p>
+                            <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-sm">{service.description}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mt-4 md:mt-8">
+                            {service.tags.map((tag: string) => (
+                                <span key={tag} className="text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-gray-100 text-gray-400">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* RIGHT: illustration */}
+                    <div className="hidden md:flex items-center justify-center bg-gray-50/60">
+                        <div className="w-[180px] lg:w-[220px] h-[130px] lg:h-[160px]">
+                            <service.Illustration />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export function Services() {
     const sectionRef = useRef<HTMLElement>(null);
@@ -150,7 +247,7 @@ export function Services() {
 
 
             {/* Everything inside here is sticky */}
-            <div className="sticky top-0 h-screen w-full flex flex-col px-4 md:px-10 overflow-y-auto lg:overflow-hidden" style={{ paddingTop: "20px" }}>
+            <div className="sticky top-0 h-screen w-full flex flex-col px-4 md:px-10 overflow-hidden" style={{ paddingTop: "20px" }}>
 
                 {/* Grid bg */}
                 <div
@@ -195,89 +292,51 @@ export function Services() {
                                 </span>
                             </div>
                         ))}
+
+                        {/* Scroll indicator */}
+                        <div className="mt-auto pb-12">
+                            <div className="flex gap-2 items-center mb-3">
+                                {services.map((_, i) => (
+                                    <div key={i} className="h-1 rounded-full transition-all duration-500"
+                                        style={{
+                                            width: activeIndex === i ? "32px" : "8px",
+                                            background: activeIndex === i ? "#f5a623" : "rgba(0,0,0,0.1)"
+                                        }} />
+                                ))}
+                            </div>
+                            <p className="text-black/20 text-[10px] uppercase font-black tracking-[4px]">Scroll to explore</p>
+                        </div>
                     </div>
 
                     {/* <div className="hidden lg:block w-px bg-red-500 shrink-0" /> */}
 
-                    {/* Card stack */}
-                    <div className="flex-1 relative mt-8 md:mt-5 lg:mt-0 pb-" style={{ perspective: "1200px" }}>
+                    {/* Circular carousel */}
+                    <div style={{
+                        flex: 1, position: "relative",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                        {/* Orbit ring hint - Hidden on mobile */}
+                        <div className="hidden md:block absolute w-[70vw] h-[200px] border border-black/[0.04] rounded-[50%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+
                         {services.map((service, index) => {
-                            // depth: 0 = top (active), 1 = one below, etc.
-                            // Cards with index > activeIndex are not yet revealed — keep off screen below
-                            const isRevealed = index <= activeIndex;
-                            const depth = activeIndex - index; // 0 for active, 1 for previous, etc.
-
-                            const translateY = isRevealed
-                                ? -depth * STACK_OFFSET   // stack peek: each buried card shifts up slightly
-                                : 600;                     // off-screen below
-                            const scale = isRevealed ? 1 - depth * 0.04 : 1;
-                            const overlayOpacity = isRevealed ? depth * 0.07 : 0;
-
+                            const transform = getCardTransform(index, activeIndex, services.length);
+                            const isActive = index === activeIndex;
                             return (
-                                <div
+                                <ServiceCard
                                     key={service.id}
-                                    style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        zIndex: index + 1,               // later cards on top
-                                        transform: `translateY(${translateY}px) scale(${scale})`,
-                                        transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
-                                        transformOrigin: "top center",
-                                    }}
-                                >
-                                    <div
-                                        className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 shadow-2xl"
-                                        style={{ background: service.bg, minHeight: "320px" }}
-                                    >
-                                        {/* Dim overlay for buried cards */}
-                                        <div
-                                            className="absolute inset-0 bg-black rounded-3xl pointer-events-none"
-                                            style={{ opacity: overlayOpacity, transition: "opacity 0.4s ease", zIndex: 20 }}
-                                        />
-
-                                        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 min-h-[380px]">
-                                            {/* LEFT: text */}
-                                            <div className="p-6 md:p-12 flex flex-col justify-between">
-                                                <div>
-                                                    <div className="flex items-center gap-4 mb-4 md:mb-6">
-                                                        <span className="text-xs font-black tracking-[3px] md:tracking-[5px] uppercase text-[#f5a623]">{service.id}</span>
-                                                        <div className="h-px flex-1 bg-gray-200" />
-                                                    </div>
-                                                    <h3
-                                                        className="font-black text-black leading-[0.9] mb-3 md:mb-4 whitespace-pre-line"
-                                                        style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 5vw, 4rem)" }}
-                                                    >
-                                                        {service.title}
-                                                    </h3>
-                                                    <p className="text-[#f5a623] text-[10px] md:text-xs font-black uppercase tracking-[2px] md:tracking-[4px] mb-3 md:mb-5">{service.subtitle}</p>
-                                                    <p className="text-gray-500 text-xs md:text-sm leading-relaxed max-w-sm">{service.description}</p>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2 mt-4 md:mt-8">
-                                                    {service.tags.map((tag) => (
-                                                        <span key={tag} className="text-[9px] md:text-[10px] font-black uppercase tracking-wider px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-gray-200 text-gray-400">
-                                                            {tag}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {/* RIGHT: illustration */}
-                                            <div className="hidden md:flex items-center justify-center p-8 bg-gray-50/60">
-                                                <div className="w-[180px] lg:w-[220px] h-[130px] lg:h-[160px]">
-                                                    <service.Illustration />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                    service={service}
+                                    transform={transform}
+                                    isActive={isActive}
+                                />
                             );
                         })}
                     </div>
 
                 </div>
             </div>
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+            `}</style>
         </section>
     );
 }
